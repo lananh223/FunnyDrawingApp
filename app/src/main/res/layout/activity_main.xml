@@ -154,11 +154,29 @@
             android:layout_margin="5dp" />
 
         <ImageButton
+            android:id="@+id/undo_button"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:src="@drawable/ic_undo"
+            android:contentDescription="undo image"
+            android:scaleType="fitXY"
+            android:layout_margin="5dp" />
+
+        <ImageButton
             android:id="@+id/brush_button"
             android:layout_width="50dp"
             android:layout_height="50dp"
             android:src="@drawable/ic_brush"
             android:contentDescription="brush button"
+            android:scaleType="fitXY"
+            android:layout_margin="5dp" />
+
+        <ImageButton
+            android:id="@+id/save_button"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:src="@drawable/ic_save"
+            android:contentDescription="save button"
             android:scaleType="fitXY"
             android:layout_margin="5dp" />
 
