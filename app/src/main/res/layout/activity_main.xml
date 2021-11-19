@@ -23,7 +23,8 @@
             android:scaleType="centerCrop"
             android:contentDescription="background image"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"/>
+            android:layout_height="match_parent"
+            tools:src="@drawable/image"/>
 
         <com.bignerdranch.android.funnydrawingapp.DrawingView
             android:id="@+id/drawing_view"
@@ -177,6 +178,15 @@
             android:layout_height="50dp"
             android:src="@drawable/ic_save"
             android:contentDescription="save button"
+            android:scaleType="fitXY"
+            android:layout_margin="5dp" />
+
+        <ImageButton
+            android:id="@+id/share_button"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:src="@drawable/share_button"
+            android:contentDescription="share button"
             android:scaleType="fitXY"
             android:layout_margin="5dp" />
 
