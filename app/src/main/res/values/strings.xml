@@ -1,3 +1,6 @@
 <resources>
     <string name="app_name">Funny Drawing App</string>
+    <string name="search_photo">search photo</string>
+    <string name="background_image">background image</string>
+    <string name="skin_color">skin color</string>
 </resources>
