@@ -35,6 +35,7 @@ import java.io.FileOutputStream
 private lateinit var brushDialog: BrushDialog
 private var _binding: DrawingAndGalleryFragmentBinding? = null
 private val binding get() = _binding!!
+private var result =""
 
 class DrawingAndGallery : Fragment() {
 
@@ -89,9 +90,9 @@ class DrawingAndGallery : Fragment() {
                 checkSelfPermission()
             }
         }
-//        binding.shareButton.setOnClickListener{
-//            shareImage(result)
-//        }
+        binding.shareButton.setOnClickListener{
+            shareImage(result)
+        }
         return binding.root
     }
 
@@ -166,7 +167,6 @@ class DrawingAndGallery : Fragment() {
     }
 
     private suspend fun saveBitmapFile(bitmap: Bitmap?): String{
-        var result =""
         // where file will be saved
         withContext(Dispatchers.IO){
             if(bitmap != null){
@@ -182,7 +182,7 @@ class DrawingAndGallery : Fragment() {
                     val fos = FileOutputStream(f)
                     fos.write(bytes.toByteArray())
                     fos.close()
-
+                    //Save file location
                     result = f.absolutePath
 
                     activity?.runOnUiThread {
@@ -199,7 +199,7 @@ class DrawingAndGallery : Fragment() {
                                 requireActivity(),
                                 "Something went wrong while saving",
                                 Toast.LENGTH_SHORT
-                            )
+                            ).show()
                         }
                     }
                 } catch(e:Exception){
@@ -237,7 +237,7 @@ class DrawingAndGallery : Fragment() {
         }
     }
 
-    fun showBrushSizeChooserDialog() {
+    private fun showBrushSizeChooserDialog() {
         brushDialog.show()
 
         brushDialog.apply {
@@ -246,11 +246,11 @@ class DrawingAndGallery : Fragment() {
                 dismiss()
             }
             mediumButton.setOnClickListener {
-                binding.drawingView.setSizeForBrush(20.toFloat())
+                binding.drawingView.setSizeForBrush(15.toFloat())
                 dismiss()
             }
             largeButton.setOnClickListener {
-                binding.drawingView.setSizeForBrush(30.toFloat())
+                binding.drawingView.setSizeForBrush(20.toFloat())
                 dismiss()
             }
         }

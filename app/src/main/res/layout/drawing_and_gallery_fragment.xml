@@ -6,18 +6,29 @@
     android:layout_height="match_parent"
     tools:context=".DrawingAndGallery">
 
-    <ImageView
-        android:id="@+id/search_photo"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:layout_margin="5dp"
-        android:padding="1dp"
-        android:src="@drawable/image"
-        android:contentDescription="@string/search_photo"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintBottom_toTopOf="@id/fl_drawing_view_container"/>
+<!--    <FrameLayout-->
+<!--        android:id="@+id/search_photo"-->
+<!--        android:layout_width="0dp"-->
+<!--        android:layout_height="0dp"-->
+<!--        android:layout_margin="2dp"-->
+<!--        app:layout_constraintTop_toTopOf="parent"-->
+<!--        app:layout_constraintLeft_toLeftOf="parent"-->
+<!--        app:layout_constraintRight_toRightOf="parent"-->
+<!--        app:layout_constraintBottom_toTopOf="@id/fl_drawing_view_container">-->
+
+<!--        <ImageView-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:src="@drawable/image"-->
+<!--            android:contentDescription="@string/search_photo"/>-->
+
+<!--        <Button-->
+<!--            android:id="@+id/menu_item_search"-->
+<!--            android:layout_width="66dp"-->
+<!--            android:layout_height="59dp"-->
+<!--            android:src="@drawable/share_button"-->
+<!--            android:title="Search" />-->
+<!--    </FrameLayout>-->
 
     <FrameLayout
         android:id="@+id/fl_drawing_view_container"
@@ -26,7 +37,7 @@
         android:layout_margin="5dp"
         android:padding="1dp"
         android:background="@drawable/background_drawing_view_layout"
-        app:layout_constraintTop_toBottomOf="@id/search_photo"
+        app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintBottom_toTopOf="@id/color_layout">
