@@ -6,7 +6,7 @@ The app now is completed with version 1 that users can:
 + Choose brush size and colors
 + Save and share image to family and friends
 
-Version 2 is updating with the functions for:
+Version 2 is updating with the new features for:
 + Search images from Google Image
 + Show image as a sample for drawing
 + Update more colors and brush sizes
