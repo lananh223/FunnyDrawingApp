@@ -10,10 +10,9 @@ Version 2 is updating with the functions for:
 + Search images from Google Image
 + Show image as a sample for drawing
 + Update more colors and brush sizes
+<img src="https://user-images.githubusercontent.com/90428483/154199480-569dabb1-2f32-4fb2-bf3b-65b3eb3ec4c8.png">
 
-<p align="center">
-  <img src="https://imgur.com/a/b5cAoY0" />
-</p>
+ [Check walk through video here](https://i.imgur.com/iJwTga4.mp4)
 
 # Technical Concepts
 
