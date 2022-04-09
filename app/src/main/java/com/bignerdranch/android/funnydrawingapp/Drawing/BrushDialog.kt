@@ -1,9 +1,10 @@
-package com.bignerdranch.android.funnydrawingapp
+package com.bignerdranch.android.funnydrawingapp.Drawing
 
 import android.app.Dialog
 import android.content.Context
 import android.os.Bundle
 import android.widget.ImageButton
+import com.bignerdranch.android.funnydrawingapp.R
 
 class BrushDialog(context: Context) : Dialog(context) {
 
