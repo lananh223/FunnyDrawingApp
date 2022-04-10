@@ -4,6 +4,7 @@ import android.Manifest
 import android.annotation.SuppressLint
 import android.app.Activity
 import android.app.Dialog
+import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.graphics.Bitmap
@@ -21,11 +22,11 @@ import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.core.view.get
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import com.bignerdranch.android.funnydrawingapp.PhotoGallery.PhotoGalleryActivity
 import com.bignerdranch.android.funnydrawingapp.R
 import com.bignerdranch.android.funnydrawingapp.databinding.DrawingAndGalleryFragmentBinding
+import com.bumptech.glide.Glide
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
@@ -47,7 +48,6 @@ class DrawingAndGallery : Fragment() {
         const val TAG = "DrawingAndGallery"
     }
 
-    private lateinit var viewModel: DrawingAndGalleryViewModel
     // A variable for current color is picked from color pallet.
     private var imageButtonCurrentPaint: ImageButton? = null
     var customProgressDialog: Dialog? = null
@@ -74,12 +74,9 @@ class DrawingAndGallery : Fragment() {
         }
 
         brushDialog = BrushDialog(requireActivity())
-        //TODO: Navigate to screen seacrh
+
+        // To google image search
         binding!!.searchButton.setOnClickListener { view: View ->
-//            requireActivity().supportFragmentManager
-//                .beginTransaction()
-//                .add(R.id.photo_recycler_view, PhotoGalleryFragment.newInstance())
-//                .commit()
             startActivity(Intent(context, PhotoGalleryActivity::class.java))
         }
 
@@ -312,10 +309,21 @@ class DrawingAndGallery : Fragment() {
         }
     }
 
-    override fun onActivityCreated(savedInstanceState: Bundle?) {
-        super.onActivityCreated(savedInstanceState)
-        viewModel = ViewModelProvider(this).get(DrawingAndGalleryViewModel::class.java)
-        // TODO: Use the ViewModel
+    private fun updateImageLink():String{
+        val sharedPreferences = requireContext().getSharedPreferences("image link", Context.MODE_PRIVATE)
+        val link = sharedPreferences.getString("image link", "")!!
+        return link
+        // set background image
+        setImage(link)
+    }
+
+    private fun setImage(link:String) {
+        binding?.ivBackground?.visibility = View.VISIBLE
+        binding?.let {
+            Glide.with(requireContext())
+                .load(link)
+                .into(it.ivBackground)
+        }
     }
 
     override fun onDestroyView() {

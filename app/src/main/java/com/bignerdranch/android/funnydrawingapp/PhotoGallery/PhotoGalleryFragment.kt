@@ -1,5 +1,7 @@
 package com.bignerdranch.android.funnydrawingapp.PhotoGallery
 
+import android.content.Context
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.*
@@ -11,12 +13,12 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.bignerdranch.android.funnydrawingapp.Drawing.DrawingAndGallery
 import com.bignerdranch.android.funnydrawingapp.PhotoGallery.model.Photo
 import com.bignerdranch.android.funnydrawingapp.R
 import com.bumptech.glide.Glide
 
 private const val TAG = "PhotoGalleryFragment"
-private const val POLL_WORK = "POLL_WORK"
 
 class PhotoGalleryFragment: Fragment() {
 
@@ -117,12 +119,28 @@ class PhotoGalleryFragment: Fragment() {
             Glide.with(holder.itemView)
                 .load(photoList[position].photoLink)
                 .into(holder.imageView)
+
+            var link = photoList[position].photoLink
+            // set on click for each item
+            holder.itemView.setOnClickListener {
+                saveImageLink(link)
+                startActivity(Intent(requireContext(), DrawingAndGallery::class.java))
+            }
         }
 
         override fun getItemCount(): Int = photoList.size
+    }
+
+    private fun saveImageLink(link: String){
+        val sharedPreferences = requireContext().getSharedPreferences("image link", Context.MODE_PRIVATE)
+        with(sharedPreferences.edit()){
+            putString("image link", link)
+            apply()
+        }
     }
 
     companion object {
         fun newInstance() = PhotoGalleryFragment()
     }
 }
+
