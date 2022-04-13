@@ -1,18 +1,13 @@
 # FunnyDrawingApp
 
 **Funny Drawing App** is a native Android application that helps users learn to draw and sketch. 
-The app now is completed with version 1 that users can:
+The app will let user:
 + Upload the image for background
++ Search images from Google Image and set as background as template
 + Choose brush size and colors
 + Save and share image to family and friends
 
-Version 2 is updating with the new features for:
-+ Search images from Google Image
-+ Show image as a sample for drawing
-+ Update more colors and brush sizes
-<img src="https://user-images.githubusercontent.com/90428483/154199480-569dabb1-2f32-4fb2-bf3b-65b3eb3ec4c8.png">
-
- [Check walk through video here](https://i.imgur.com/iJwTga4.mp4)
+<img src="https://user-images.githubusercontent.com/90428483/163278334-8d2e2508-6515-415d-a5b9-22fd8735ed2e.png">
 
 # Technical Concepts
 

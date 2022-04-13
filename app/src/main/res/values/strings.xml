@@ -1,3 +1,11 @@
 <resources>
     <string name="app_name">Funny Drawing App</string>
+    <string name="search_photo">search photo</string>
+    <string name="background_image">background image</string>
+    <string name="skin_color">skin color</string>
+    <string name="search">Search</string>
+    <string name="clear_search">Clear Search</string>
+    <string name="notification_channel_name">FlickrFetchr</string>
+    <string name="new_pictures_title">New PhotoGallery Pictures</string>
+    <string name="new_pictures_text">You have new pictures in PhotoGallery.</string>
 </resources>
