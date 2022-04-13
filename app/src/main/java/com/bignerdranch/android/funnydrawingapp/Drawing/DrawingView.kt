@@ -1,4 +1,4 @@
-package com.bignerdranch.android.funnydrawingapp
+package com.bignerdranch.android.funnydrawingapp.Drawing
 
 import android.content.Context
 import android.graphics.*

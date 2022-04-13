@@ -1,4 +1,4 @@
-package com.bignerdranch.android.funnydrawingapp.PhotoGallery
+package com.bignerdranch.android.funnydrawingapp.PhotoGallery.model
 
 import android.net.Uri
 import com.google.gson.annotations.SerializedName

@@ -1,9 +1,10 @@
-package com.bignerdranch.android.funnydrawingapp
+package com.bignerdranch.android.funnydrawingapp.Drawing
 
 import android.Manifest
 import android.annotation.SuppressLint
 import android.app.Activity
 import android.app.Dialog
+import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.graphics.Bitmap
@@ -21,9 +22,11 @@ import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.core.view.get
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
+import com.bignerdranch.android.funnydrawingapp.PhotoGallery.PhotoGalleryActivity
+import com.bignerdranch.android.funnydrawingapp.R
 import com.bignerdranch.android.funnydrawingapp.databinding.DrawingAndGalleryFragmentBinding
+import com.bumptech.glide.Glide
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
@@ -33,8 +36,7 @@ import java.io.FileOutputStream
 
 @SuppressLint("StaticFieldLeak")
 private lateinit var brushDialog: BrushDialog
-private var _binding: DrawingAndGalleryFragmentBinding? = null
-private val binding get() = _binding!!
+private var binding: DrawingAndGalleryFragmentBinding? = null
 private var result =""
 
 class DrawingAndGallery : Fragment() {
@@ -46,7 +48,6 @@ class DrawingAndGallery : Fragment() {
         const val TAG = "DrawingAndGallery"
     }
 
-    private lateinit var viewModel: DrawingAndGalleryViewModel
     // A variable for current color is picked from color pallet.
     private var imageButtonCurrentPaint: ImageButton? = null
     var customProgressDialog: Dialog? = null
@@ -55,45 +56,50 @@ class DrawingAndGallery : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        _binding = DrawingAndGalleryFragmentBinding.inflate(inflater, container, false)
-        binding.drawingView.setSizeForBrush(20.toFloat())
+        binding = DrawingAndGalleryFragmentBinding.inflate(inflater, container, false)
+        binding!!.drawingView.setSizeForBrush(20.toFloat())
 
         /**
          * This is to select the default Image button which is
          * active and color is already defined in the drawing view class.
          * array list start position is 0 so the black color is at position 1.
          */
-        imageButtonCurrentPaint = binding.colorLayout[1] as ImageButton
+        imageButtonCurrentPaint = binding!!.colorLayout[1] as ImageButton
         imageButtonCurrentPaint!!.setImageDrawable(
             ContextCompat.getDrawable(requireActivity(), R.drawable.pallet_selected)
         )
 
-        binding.brushButton.setOnClickListener {
+        binding!!.brushButton.setOnClickListener {
             showBrushSizeChooserDialog()
         }
 
         brushDialog = BrushDialog(requireActivity())
 
-        binding.galleryButton.setOnClickListener {
+        // To google image search
+        binding!!.searchButton.setOnClickListener { view: View ->
+            startActivity(Intent(context, PhotoGalleryActivity::class.java))
+        }
+
+        binding!!.galleryButton.setOnClickListener {
             checkSelfPermission()
         }
-        binding.undoButton.setOnClickListener {
-            binding.drawingView.onClickUndo()
+        binding!!.undoButton.setOnClickListener {
+            binding!!.drawingView.onClickUndo()
         }
-        binding.saveButton.setOnClickListener {
+        binding!!.saveButton.setOnClickListener {
             if(isPermissionAllowed()){
                 showProgressDialog()
                 lifecycleScope.launch {
-                    saveBitmapFile(getBitmapFromView(binding.flDrawingViewContainer))
+                    saveBitmapFile(getBitmapFromView(binding!!.flDrawingViewContainer))
                 }
             } else {
                 checkSelfPermission()
             }
         }
-        binding.shareButton.setOnClickListener{
+        binding!!.shareButton.setOnClickListener{
             shareImage(result)
         }
-        return binding.root
+        return binding!!.root
     }
 
     private fun checkSelfPermission() {
@@ -220,14 +226,14 @@ class DrawingAndGallery : Fragment() {
                 // If works
                 try{
                     if(data!!.data != null){
-                        binding.ivBackground.visibility = View.VISIBLE
-                        binding.ivBackground.setImageURI(data.data)
+                        binding?.ivBackground?.visibility = View.VISIBLE
+                        binding?.ivBackground?.setImageURI(data.data)
                     } else {
                         Toast.makeText(
                             requireActivity(),
                             "Error in parsing the image or its corrupted",
                             Toast.LENGTH_SHORT
-                        )
+                        ).show()
                     }
                 } catch(e: Exception){
                     // If not work
@@ -242,15 +248,15 @@ class DrawingAndGallery : Fragment() {
 
         brushDialog.apply {
             smallButton.setOnClickListener {
-                binding.drawingView.setSizeForBrush(10.toFloat())
+                binding?.drawingView?.setSizeForBrush(10.toFloat())
                 dismiss()
             }
             mediumButton.setOnClickListener {
-                binding.drawingView.setSizeForBrush(15.toFloat())
+                binding?.drawingView?.setSizeForBrush(15.toFloat())
                 dismiss()
             }
             largeButton.setOnClickListener {
-                binding.drawingView.setSizeForBrush(20.toFloat())
+                binding?.drawingView?.setSizeForBrush(20.toFloat())
                 dismiss()
             }
         }
@@ -261,8 +267,8 @@ class DrawingAndGallery : Fragment() {
             val imageButton = view as ImageButton
 
             val colorTag = imageButton.tag.toString()
-            // Here the tag is used for swaping the current color with previous color.
-            binding.drawingView.setColor(colorTag)
+            // Here the tag is used for swapping the current color with previous color.
+            binding?.drawingView?.setColor(colorTag)
             imageButton.setImageDrawable(
                 ContextCompat.getDrawable(requireActivity(), R.drawable.pallet_selected)
             )
@@ -303,14 +309,25 @@ class DrawingAndGallery : Fragment() {
         }
     }
 
-    override fun onActivityCreated(savedInstanceState: Bundle?) {
-        super.onActivityCreated(savedInstanceState)
-        viewModel = ViewModelProvider(this).get(DrawingAndGalleryViewModel::class.java)
-        // TODO: Use the ViewModel
+    private fun updateImageLink():String{
+        val sharedPreferences = requireContext().getSharedPreferences("image link", Context.MODE_PRIVATE)
+        val link = sharedPreferences.getString("image link", "")!!
+        return link
+        // set background image
+        setImage(link)
+    }
+
+    private fun setImage(link:String) {
+        binding?.ivBackground?.visibility = View.VISIBLE
+        binding?.let {
+            Glide.with(requireContext())
+                .load(link)
+                .into(it.ivBackground)
+        }
     }
 
     override fun onDestroyView() {
         super.onDestroyView()
-        _binding = null
+        binding = null
     }
 }

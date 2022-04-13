@@ -1,4 +1,4 @@
-package com.bignerdranch.android.funnydrawingapp
+package com.bignerdranch.android.funnydrawingapp.Drawing
 
 import androidx.lifecycle.ViewModel
 

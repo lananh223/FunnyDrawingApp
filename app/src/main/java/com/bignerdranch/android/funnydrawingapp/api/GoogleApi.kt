@@ -1,19 +1,21 @@
 package com.bignerdranch.android.funnydrawingapp.api
 
 import com.bignerdranch.android.funnydrawingapp.PhotoGallery.GoogleResponse
-import okhttp3.ResponseBody
 import retrofit2.Call
 import retrofit2.http.GET
 import retrofit2.http.Query
-import retrofit2.http.Url
+
+private val GOOGLE_API_KEY = "AIzaSyBkcIvSJQFSDscpc9Q79AE_TdOLbe_Mi68"
 
 //Set up retrofit interface to define Api calls
 interface GoogleApi {
     // define fetch photo request
+
     @GET("https://www.googleapis.com/customsearch/v1?")
-    fun fetchPhotos(): Call<GoogleResponse>
-    @GET
-    fun fetchUrlBytes(@Url url:String):Call<ResponseBody>
-    @GET("services/rest?method=flickr.photos.search")
-    fun searchPhotos(@Query("text") query: String): Call<GoogleResponse>
+    fun fetchPhotos(
+        @Query("q") searchQuery: String,
+        @Query("key") apiKey: String = GOOGLE_API_KEY,
+        @Query("cx") cx: String = "625d03639e87f99d9",
+        @Query("searchType") searchType: String = "image"
+    ): Call<GoogleResponse>
 }
