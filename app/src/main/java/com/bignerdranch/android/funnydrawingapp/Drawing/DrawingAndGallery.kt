@@ -99,6 +99,10 @@ class DrawingAndGallery : Fragment() {
         binding!!.shareButton.setOnClickListener{
             shareImage(result)
         }
+
+        binding!!.resetButton.setOnClickListener {
+            removeBackground()
+        }
         return binding!!.root
     }
 
@@ -323,6 +327,14 @@ class DrawingAndGallery : Fragment() {
             Glide.with(requireContext())
                 .load(link)
                 .into(it.ivBackground)
+        }
+    }
+
+    private fun removeBackground() {
+        if (binding?.ivBackground?.visibility == View.VISIBLE) {
+            binding?.ivBackground?.visibility = View.INVISIBLE
+        } else {
+            binding?.ivBackground?.visibility = View.VISIBLE
         }
     }
 

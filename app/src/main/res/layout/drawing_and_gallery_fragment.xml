@@ -223,6 +223,14 @@
             android:scaleType="fitXY"
             android:layout_margin="5dp" />
 
+        <ImageButton
+            android:id="@+id/reset_button"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:src="@drawable/ic_close_white_reg"
+            android:contentDescription="Reset button"
+            android:scaleType="fitXY"
+            android:layout_margin="5dp" />
     </LinearLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
