@@ -36,8 +36,7 @@ import java.io.FileOutputStream
 
 @SuppressLint("StaticFieldLeak")
 private lateinit var brushDialog: BrushDialog
-private var binding: DrawingAndGalleryFragmentBinding? = null
-private var result =""
+private var result = ""
 
 class DrawingAndGallery : Fragment() {
 
@@ -51,12 +50,14 @@ class DrawingAndGallery : Fragment() {
     // A variable for current color is picked from color pallet.
     private var imageButtonCurrentPaint: ImageButton? = null
     var customProgressDialog: Dialog? = null
+    private var binding: DrawingAndGalleryFragmentBinding? = null
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         binding = DrawingAndGalleryFragmentBinding.inflate(inflater, container, false)
+        updateBackgroundImage()
         binding!!.drawingView.setSizeForBrush(20.toFloat())
 
         /**
@@ -87,7 +88,7 @@ class DrawingAndGallery : Fragment() {
             binding!!.drawingView.onClickUndo()
         }
         binding!!.saveButton.setOnClickListener {
-            if(isPermissionAllowed()){
+            if (isPermissionAllowed()) {
                 showProgressDialog()
                 lifecycleScope.launch {
                     saveBitmapFile(getBitmapFromView(binding!!.flDrawingViewContainer))
@@ -96,12 +97,16 @@ class DrawingAndGallery : Fragment() {
                 checkSelfPermission()
             }
         }
-        binding!!.shareButton.setOnClickListener{
+        binding!!.shareButton.setOnClickListener {
             shareImage(result)
         }
 
+        binding!!.switchBackgroundButton.setOnClickListener {
+            showAndHideBackground()
+        }
+
         binding!!.resetButton.setOnClickListener {
-            removeBackground()
+            binding?.drawingView?.reset()
         }
         return binding!!.root
     }
@@ -155,17 +160,21 @@ class DrawingAndGallery : Fragment() {
                 ).show()
             }
         }
-    }/**
+    }
+
+    /**
      * Create bitmap from view and returns it
      */
 
     private fun getBitmapFromView(view: View): Bitmap {
-        val returnBitmap = Bitmap.createBitmap(view.width,
-            view.height, Bitmap.Config.ARGB_8888)
+        val returnBitmap = Bitmap.createBitmap(
+            view.width,
+            view.height, Bitmap.Config.ARGB_8888
+        )
         //bind canvas on the view
         val canvas = Canvas(returnBitmap)
         val backgroundDrawable = view.background
-        if(backgroundDrawable != null){
+        if (backgroundDrawable != null) {
             backgroundDrawable.draw(canvas)
         } else {
             canvas.drawColor(Color.WHITE)
@@ -176,18 +185,19 @@ class DrawingAndGallery : Fragment() {
         return returnBitmap
     }
 
-    private suspend fun saveBitmapFile(bitmap: Bitmap?): String{
+    private suspend fun saveBitmapFile(bitmap: Bitmap?): String {
         // where file will be saved
-        withContext(Dispatchers.IO){
-            if(bitmap != null){
+        withContext(Dispatchers.IO) {
+            if (bitmap != null) {
                 try {
                     // Store on device on specific location
                     val bytes = ByteArrayOutputStream()
                     bitmap.compress(Bitmap.CompressFormat.PNG, 90, bytes)
                     // Sort files return and give them unique name
                     val f = File(
-                        activity?.externalCacheDir!!.absoluteFile.toString()+
-                            File.separator + "FunnyDrawingApp_" + System.currentTimeMillis()/1000 + ".png")
+                        activity?.externalCacheDir!!.absoluteFile.toString() +
+                                File.separator + "FunnyDrawingApp_" + System.currentTimeMillis() / 1000 + ".png"
+                    )
                     // Create a file output stream, write and close
                     val fos = FileOutputStream(f)
                     fos.write(bytes.toByteArray())
@@ -212,7 +222,7 @@ class DrawingAndGallery : Fragment() {
                             ).show()
                         }
                     }
-                } catch(e:Exception){
+                } catch (e: Exception) {
                     result = ""
                     e.printStackTrace()
                 }
@@ -225,11 +235,11 @@ class DrawingAndGallery : Fragment() {
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
 
-        if(resultCode == Activity.RESULT_OK){
-            if(requestCode == GALLERY){
+        if (resultCode == Activity.RESULT_OK) {
+            if (requestCode == GALLERY) {
                 // If works
-                try{
-                    if(data!!.data != null){
+                try {
+                    if (data!!.data != null) {
                         binding?.ivBackground?.visibility = View.VISIBLE
                         binding?.ivBackground?.setImageURI(data.data)
                     } else {
@@ -239,7 +249,7 @@ class DrawingAndGallery : Fragment() {
                             Toast.LENGTH_SHORT
                         ).show()
                     }
-                } catch(e: Exception){
+                } catch (e: Exception) {
                     // If not work
                     e.printStackTrace()
                 }
@@ -283,7 +293,7 @@ class DrawingAndGallery : Fragment() {
         }
     }
 
-    private fun showProgressDialog(){
+    private fun showProgressDialog() {
         customProgressDialog = Dialog(requireActivity())
         /**
          * Set the screen content from a layout resource
@@ -294,34 +304,38 @@ class DrawingAndGallery : Fragment() {
         customProgressDialog?.show()
     }
 
-    private fun cancelProgressDialog(){
-        if (customProgressDialog != null){
+    private fun cancelProgressDialog() {
+        if (customProgressDialog != null) {
             customProgressDialog?.dismiss()
             customProgressDialog = null
         }
     }
+
     // Share image to others
-    private fun shareImage(result:String){
-        MediaScannerConnection.scanFile(requireActivity(), arrayOf(result), null){
-                path, uri ->
+    private fun shareImage(result: String) {
+        MediaScannerConnection.scanFile(requireActivity(), arrayOf(result), null) { path, uri ->
             val shareIntent = Intent()
             shareIntent.action = Intent.ACTION_SEND
             shareIntent.putExtra(Intent.EXTRA_STREAM, uri)
-            shareIntent.type="image/png"
+            shareIntent.type = "image/png"
             val chooserIntent = Intent.createChooser(shareIntent, "Share")
             startActivity(chooserIntent)
         }
     }
 
-    private fun updateImageLink():String{
-        val sharedPreferences = requireContext().getSharedPreferences("image link", Context.MODE_PRIVATE)
-        val link = sharedPreferences.getString("image link", "")!!
-        return link
-        // set background image
-        setImage(link)
+    fun updateBackgroundImage() {
+        val sharedPreferences =
+            context?.getSharedPreferences("image link", Context.MODE_PRIVATE)
+        if (sharedPreferences != null) {
+            val link = sharedPreferences.getString("image link", "")
+            // set background image
+            if (link != null) {
+                setImage(link)
+            }
+        }
     }
 
-    private fun setImage(link:String) {
+    private fun setImage(link: String) {
         binding?.ivBackground?.visibility = View.VISIBLE
         binding?.let {
             Glide.with(requireContext())
@@ -330,7 +344,7 @@ class DrawingAndGallery : Fragment() {
         }
     }
 
-    private fun removeBackground() {
+    private fun showAndHideBackground() {
         if (binding?.ivBackground?.visibility == View.VISIBLE) {
             binding?.ivBackground?.visibility = View.INVISIBLE
         } else {

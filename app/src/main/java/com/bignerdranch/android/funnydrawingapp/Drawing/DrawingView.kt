@@ -7,7 +7,7 @@ import android.util.TypedValue
 import android.view.MotionEvent
 import android.view.View
 
-class DrawingView(context: Context, attributes: AttributeSet): View(context, attributes) {
+class DrawingView(context: Context, attributes: AttributeSet) : View(context, attributes) {
 
     private var drawPath: CustomPath? = null
     private var canvasBitmap: Bitmap? = null
@@ -15,9 +15,9 @@ class DrawingView(context: Context, attributes: AttributeSet): View(context, att
     private var canvasPaint: Paint? = null
     private var brushSize: Float = 0.toFloat()
     private var color = Color.BLACK
-    private var canvas :Canvas? = null
-    private val paths = ArrayList<CustomPath>()
-    private val undoPaths = ArrayList<CustomPath>()
+    private var canvas: Canvas? = null
+    private var paths = ArrayList<CustomPath>()
+    private var undoPaths = ArrayList<CustomPath>()
 
     init {
         setUpDrawing()
@@ -34,24 +34,26 @@ class DrawingView(context: Context, attributes: AttributeSet): View(context, att
             this.strokeCap = Paint.Cap.ROUND
         }
     }
-// set up inflated screen everytime size changes
+
+    // set up inflated screen everytime size changes
     override fun onSizeChanged(w: Int, h: Int, oldw: Int, oldh: Int) {
         super.onSizeChanged(w, h, oldw, oldh)
         canvasBitmap = Bitmap.createBitmap(w, h, Bitmap.Config.ARGB_8888)
         canvas = Canvas(canvasBitmap!!)
     }
-// write or draw sth on on canvas
+
+    // write or draw sth on on canvas
     override fun onDraw(canvas: Canvas) {
         super.onDraw(canvas)
         canvas.drawBitmap(canvasBitmap!!, 0f, 0f, canvasPaint)
 
-        for(path in paths){
+        for (path in paths) {
             drawPaint!!.strokeWidth = path.brushThickness
             drawPaint!!.color = path.color
             canvas.drawPath(path, drawPaint!!)
         }
 
-        if (drawPath!!.isEmpty){
+        if (drawPath!!.isEmpty) {
             drawPaint!!.strokeWidth = drawPath!!.brushThickness
             drawPaint!!.color = drawPath!!.color
             canvas.drawPath(drawPath!!, drawPaint!!)
@@ -62,7 +64,7 @@ class DrawingView(context: Context, attributes: AttributeSet): View(context, att
         val touchX = event?.x
         val touchY = event?.y
 
-        when(event?.action) {
+        when (event?.action) {
             MotionEvent.ACTION_DOWN -> {
                 drawPath!!.color = color
                 drawPath!!.brushThickness = brushSize
@@ -85,8 +87,10 @@ class DrawingView(context: Context, attributes: AttributeSet): View(context, att
 
     // swap size dimension with different screen
     fun setSizeForBrush(newSize: Float) {
-        brushSize = TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP,
-                                                newSize, resources.displayMetrics)
+        brushSize = TypedValue.applyDimension(
+            TypedValue.COMPLEX_UNIT_DIP,
+            newSize, resources.displayMetrics
+        )
         drawPaint!!.strokeWidth = brushSize
     }
 
@@ -95,19 +99,29 @@ class DrawingView(context: Context, attributes: AttributeSet): View(context, att
         drawPaint!!.color = color
     }
 
-    fun setColor(newColor: Int) {
-        drawPaint!!.color = newColor
+    fun reset() {
+        if (paths.size > 0) {
+            paths = ArrayList()
+            invalidate()
+        }
+        val sharedPreferences =
+            context.getSharedPreferences("image link", Context.MODE_PRIVATE)
+        with(sharedPreferences.edit()) {
+            putString("image link", "")
+            apply()
+        }
+        DrawingAndGallery().updateBackgroundImage()
     }
 
-    fun onClickUndo(){
-        if(paths.size > 0){
+    fun onClickUndo() {
+        if (paths.size > 0) {
             undoPaths.add(paths.removeAt(paths.size - 1))
             //redraw, call onDraw
             invalidate()
         }
     }
 
-    internal inner class CustomPath(var color: Int, var brushThickness: Float): Path() {
+    internal inner class CustomPath(var color: Int, var brushThickness: Float) : Path() {
 
     }
 }

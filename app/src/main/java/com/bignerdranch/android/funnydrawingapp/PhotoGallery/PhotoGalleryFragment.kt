@@ -28,7 +28,6 @@ class PhotoGalleryFragment: Fragment() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        retainInstance = true
         setHasOptionsMenu(true)
         //Getting ViewModel instance from provider
         photoGalleryViewModel = ViewModelProvider(this)[PhotoGalleryViewModel::class.java]
