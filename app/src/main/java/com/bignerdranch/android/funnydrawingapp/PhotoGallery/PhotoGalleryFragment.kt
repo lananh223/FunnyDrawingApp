@@ -1,7 +1,6 @@
 package com.bignerdranch.android.funnydrawingapp.PhotoGallery
 
 import android.content.Context
-import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.*
@@ -11,7 +10,7 @@ import androidx.appcompat.widget.SearchView
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
-import androidx.recyclerview.widget.GridLayoutManager
+import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.bignerdranch.android.funnydrawingapp.Drawing.DrawingAndGallery
 import com.bignerdranch.android.funnydrawingapp.PhotoGallery.model.Photo
@@ -20,7 +19,7 @@ import com.bumptech.glide.Glide
 
 private const val TAG = "PhotoGalleryFragment"
 
-class PhotoGalleryFragment: Fragment() {
+class PhotoGalleryFragment : Fragment() {
 
     private lateinit var photoRecyclerView: RecyclerView
     private lateinit var photoGalleryViewModel: PhotoGalleryViewModel
@@ -42,7 +41,7 @@ class PhotoGalleryFragment: Fragment() {
 
         photoRecyclerView = view.findViewById(R.id.photo_recycler_view)
         // set recycler's layout manager to new instance of GridLayout Manager
-        photoRecyclerView.layoutManager = GridLayoutManager(context, 1)
+        photoRecyclerView.layoutManager = LinearLayoutManager(context)
 
         return view
     }
@@ -64,7 +63,7 @@ class PhotoGalleryFragment: Fragment() {
 
         searchView.apply {
 
-            setOnQueryTextListener(object: SearchView.OnQueryTextListener {
+            setOnQueryTextListener(object : SearchView.OnQueryTextListener {
                 override fun onQueryTextSubmit(queryText: String): Boolean {
                     Log.d(TAG, "QueryTextSubmit: $queryText")
                     photoGalleryViewModel.fetchPhotos(queryText)
@@ -77,7 +76,7 @@ class PhotoGalleryFragment: Fragment() {
                 }
             })
 
-            setOnClickListener{
+            setOnClickListener {
                 searchView.setQuery(photoGalleryViewModel.searchTerm, false)
             }
         }
@@ -96,11 +95,11 @@ class PhotoGalleryFragment: Fragment() {
 
 
     //Add Adapter implementation
-    private inner class PhotoAdapter(private val photoList: List<Photo>):
-        RecyclerView.Adapter<PhotoAdapter.ViewHolder>(){
+    private inner class PhotoAdapter(private val photoList: List<Photo>) :
+        RecyclerView.Adapter<PhotoAdapter.ViewHolder>() {
 
         //Adding ViewHolder
-        inner class ViewHolder(itemImageView: ImageView):RecyclerView.ViewHolder(itemImageView){
+        inner class ViewHolder(itemImageView: ImageView) : RecyclerView.ViewHolder(itemImageView) {
             val imageView: ImageView = itemImageView
         }
 
@@ -117,22 +116,28 @@ class PhotoGalleryFragment: Fragment() {
         override fun onBindViewHolder(holder: ViewHolder, position: Int) {
             Glide.with(holder.itemView)
                 .load(photoList[position].photoLink)
+                .fitCenter()
                 .into(holder.imageView)
 
-            var link = photoList[position].photoLink
+            val link = photoList[position].photoLink
             // set on click for each item
             holder.itemView.setOnClickListener {
                 saveImageLink(link)
-                startActivity(Intent(requireContext(), DrawingAndGallery::class.java))
+
+                val fragmentManager = requireActivity().supportFragmentManager
+                val transaction = fragmentManager.beginTransaction()
+                transaction.replace(R.id.fl_drawing_view_container, DrawingAndGallery.newInstance())
+                transaction.commit()
             }
         }
 
         override fun getItemCount(): Int = photoList.size
     }
 
-    private fun saveImageLink(link: String){
-        val sharedPreferences = requireContext().getSharedPreferences("image link", Context.MODE_PRIVATE)
-        with(sharedPreferences.edit()){
+    private fun saveImageLink(link: String) {
+        val sharedPreferences =
+            requireContext().getSharedPreferences("image link", Context.MODE_PRIVATE)
+        with(sharedPreferences.edit()) {
             putString("image link", link)
             apply()
         }
