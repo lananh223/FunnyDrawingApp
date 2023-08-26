@@ -116,7 +116,6 @@ class PhotoGalleryFragment : Fragment() {
         override fun onBindViewHolder(holder: ViewHolder, position: Int) {
             Glide.with(holder.itemView)
                 .load(photoList[position].photoLink)
-                .fitCenter()
                 .into(holder.imageView)
 
             val link = photoList[position].photoLink
@@ -126,7 +125,7 @@ class PhotoGalleryFragment : Fragment() {
 
                 val fragmentManager = requireActivity().supportFragmentManager
                 val transaction = fragmentManager.beginTransaction()
-                transaction.replace(R.id.fl_drawing_view_container, DrawingAndGallery.newInstance())
+                transaction.replace(R.id.galleryFragmentContainer, DrawingAndGallery.newInstance())
                 transaction.commit()
             }
         }
