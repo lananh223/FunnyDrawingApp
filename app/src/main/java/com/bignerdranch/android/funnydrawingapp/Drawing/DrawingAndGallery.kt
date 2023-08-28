@@ -106,6 +106,11 @@ class DrawingAndGallery : Fragment() {
         }
 
         binding!!.resetButton.setOnClickListener {
+            Toast.makeText(
+                context,
+                R.string.restart_app,
+                Toast.LENGTH_LONG
+            ).show()
             binding?.drawingView?.reset()
         }
         return binding!!.root

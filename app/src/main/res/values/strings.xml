@@ -8,4 +8,5 @@
     <string name="notification_channel_name">GoogleFetchr</string>
     <string name="new_pictures_title">New PhotoGallery Pictures</string>
     <string name="new_pictures_text">You have new pictures in PhotoGallery.</string>
+    <string name="restart_app">Please restart the app if you want to remove the background completely!</string>
 </resources>
