@@ -5,6 +5,7 @@ import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.app.AppCompatDelegate
 import com.bignerdranch.android.funnydrawingapp.Drawing.DrawingAndGallery
 
 class MainActivity : AppCompatActivity() {
@@ -20,6 +21,7 @@ class MainActivity : AppCompatActivity() {
                 .add(R.id.fragmentContainer, DrawingAndGallery.newInstance(), DrawingAndGallery.TAG)
                 .commit()
         }
+        AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
     }
 
     fun paintClicked(view: View) {
