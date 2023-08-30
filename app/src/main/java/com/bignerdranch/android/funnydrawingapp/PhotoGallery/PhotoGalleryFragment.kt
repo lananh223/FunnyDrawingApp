@@ -5,7 +5,6 @@ import android.os.Bundle
 import android.util.Log
 import android.view.*
 import android.widget.ImageView
-import androidx.appcompat.widget.AppCompatImageView
 import androidx.appcompat.widget.SearchView
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
@@ -93,22 +92,22 @@ class PhotoGalleryFragment : Fragment() {
         }
     }
 
-
     //Add Adapter implementation
     private inner class PhotoAdapter(private val photoList: List<Photo>) :
         RecyclerView.Adapter<PhotoAdapter.ViewHolder>() {
 
         //Adding ViewHolder
-        inner class ViewHolder(itemImageView: ImageView) : RecyclerView.ViewHolder(itemImageView) {
-            val imageView: ImageView = itemImageView
+        inner class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
+            val imageView: ImageView = view.findViewById(R.id.image)
         }
 
         override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-            val view = layoutInflater.inflate(
-                R.layout.list_item_gallery,
-                parent,
-                false
-            ) as AppCompatImageView
+            val view = LayoutInflater.from(parent.context)
+                .inflate(
+                    R.layout.list_item_gallery,
+                    parent,
+                    false
+                )
             return ViewHolder(view)
         }
 

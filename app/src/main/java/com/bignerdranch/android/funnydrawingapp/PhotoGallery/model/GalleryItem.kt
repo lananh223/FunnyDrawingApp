@@ -11,7 +11,7 @@ data class GalleryItem(
 ){
     val photoPageUri: Uri
         get() {
-            return Uri.parse("https://www.google.com/imghp?hl=en")
+            return Uri.parse("https://pixabay.com/")
                 .buildUpon()
                 .appendPath(owner)
                 .appendPath(id)
