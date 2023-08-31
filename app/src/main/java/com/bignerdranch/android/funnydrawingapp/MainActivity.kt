@@ -26,7 +26,8 @@ class MainActivity : AppCompatActivity() {
 
     fun paintClicked(view: View) {
         // get painClicked function from the Fragment
-        val fragment = supportFragmentManager.findFragmentByTag(DrawingAndGallery.TAG) as DrawingAndGallery
+        val fragment =
+            supportFragmentManager.findFragmentByTag(DrawingAndGallery.TAG) as DrawingAndGallery
         fragment.paintClicked(view)
     }
 
