@@ -188,14 +188,6 @@
             android:src="@drawable/ic_save" />
 
         <ImageButton
-            android:id="@+id/share_button"
-            android:layout_width="50dp"
-            android:layout_height="50dp"
-            android:contentDescription="share button"
-            android:scaleType="centerInside"
-            android:src="@drawable/ic_share" />
-
-        <ImageButton
             android:id="@+id/switch_background_button"
             android:layout_width="50dp"
             android:layout_height="50dp"

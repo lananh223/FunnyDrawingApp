@@ -21,11 +21,9 @@ import android.widget.ImageButton
 import android.widget.Toast
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
-import androidx.core.content.FileProvider
 import androidx.core.view.get
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
-import com.bignerdranch.android.funnydrawingapp.BuildConfig.APPLICATION_ID
 import com.bignerdranch.android.funnydrawingapp.PhotoGallery.PhotoGalleryActivity
 import com.bignerdranch.android.funnydrawingapp.R
 import com.bignerdranch.android.funnydrawingapp.databinding.DrawingAndGalleryFragmentBinding
@@ -99,9 +97,6 @@ class DrawingAndGallery : Fragment() {
             } else {
                 checkSelfPermission()
             }
-        }
-        binding!!.shareButton.setOnClickListener {
-            shareImage(result)
         }
 
         binding!!.switchBackgroundButton.setOnClickListener {
@@ -203,7 +198,7 @@ class DrawingAndGallery : Fragment() {
                     bitmap.compress(Bitmap.CompressFormat.PNG, 90, bytes)
                     // Sort files return and give them unique name
                     val f = File(
-                        Environment.getExternalStorageDirectory().absolutePath +"/DCIM/FunnyImage" + System.currentTimeMillis() / 1000 + ".png"
+                        Environment.getExternalStorageDirectory().absolutePath + "/DCIM/FunnyImage" + System.currentTimeMillis() / 1000 + ".png"
                     )
                     // Create a file output stream, write and close
                     val fos = FileOutputStream(f)
@@ -320,7 +315,7 @@ class DrawingAndGallery : Fragment() {
 
     // Share image to others
     private fun shareImage(result: String) {
-        MediaScannerConnection.scanFile(requireActivity(), arrayOf(result), null) { path, uri ->
+        MediaScannerConnection.scanFile(requireActivity(), arrayOf(result), null) { _, uri ->
             val shareIntent = Intent()
             shareIntent.action = Intent.ACTION_SEND
             shareIntent.putExtra(Intent.EXTRA_STREAM, uri)
