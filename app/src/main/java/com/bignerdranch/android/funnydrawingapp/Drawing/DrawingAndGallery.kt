@@ -50,7 +50,7 @@ class DrawingAndGallery : Fragment() {
 
     // A variable for current color is picked from color pallet.
     private var imageButtonCurrentPaint: ImageButton? = null
-    var customProgressDialog: Dialog? = null
+    private var customProgressDialog: Dialog? = null
     private var binding: DrawingAndGalleryFragmentBinding? = null
 
     override fun onCreateView(
@@ -59,7 +59,7 @@ class DrawingAndGallery : Fragment() {
     ): View {
         binding = DrawingAndGalleryFragmentBinding.inflate(inflater, container, false)
         updateBackgroundImage()
-        binding!!.drawingView.setSizeForBrush(20.toFloat())
+        binding!!.drawingView.setSizeForBrush(5.toFloat())
 
         /**
          * This is to select the default Image button which is
@@ -264,15 +264,15 @@ class DrawingAndGallery : Fragment() {
 
         brushDialog.apply {
             smallButton.setOnClickListener {
-                binding?.drawingView?.setSizeForBrush(10.toFloat())
+                binding?.drawingView?.setSizeForBrush(5.toFloat())
                 dismiss()
             }
             mediumButton.setOnClickListener {
-                binding?.drawingView?.setSizeForBrush(15.toFloat())
+                binding?.drawingView?.setSizeForBrush(10.toFloat())
                 dismiss()
             }
             largeButton.setOnClickListener {
-                binding?.drawingView?.setSizeForBrush(20.toFloat())
+                binding?.drawingView?.setSizeForBrush(15.toFloat())
                 dismiss()
             }
         }
