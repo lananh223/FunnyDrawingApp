@@ -9,4 +9,20 @@
     <string name="new_pictures_title">New PhotoGallery Pictures</string>
     <string name="new_pictures_text">You have new pictures in PhotoGallery.</string>
     <string name="restart_app">Please restart the app if you want to remove the background completely!</string>
+
+    <string name="black_color">black color</string>
+    <string name="red_color">red color</string>
+    <string name="green_color">green color</string>
+    <string name="blue_color">blue color</string>
+    <string name="yellow_color">yellow color</string>
+    <string name="lollipop_color">lollipop color</string>
+    <string name="random_color">random color</string>
+    <string name="white_color">white color</string>
+
+    <string name="gallery_image">gallery image</string>
+    <string name="undo_image">undo image</string>
+    <string name="brush_button">brush button</string>
+    <string name="save_button">save button</string>
+    <string name="switch_background_button">Switch background button</string>
+    <string name="reset_button">Reset button</string>
 </resources>

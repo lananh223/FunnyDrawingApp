@@ -1,9 +1,6 @@
 package com.bignerdranch.android.funnydrawingapp
 
-import android.content.Context
-import android.content.Intent
 import android.os.Bundle
-import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.app.AppCompatDelegate
 import com.bignerdranch.android.funnydrawingapp.Drawing.DrawingAndGallery
@@ -22,18 +19,5 @@ class MainActivity : AppCompatActivity() {
                 .commit()
         }
         AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
-    }
-
-    fun paintClicked(view: View) {
-        // get painClicked function from the Fragment
-        val fragment =
-            supportFragmentManager.findFragmentByTag(DrawingAndGallery.TAG) as DrawingAndGallery
-        fragment.paintClicked(view)
-    }
-
-    companion object {
-        fun newIntent(context: Context): Intent {
-            return Intent(context, DrawingAndGallery::class.java)
-        }
     }
 }

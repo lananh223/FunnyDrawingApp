@@ -48,8 +48,6 @@ class DrawingAndGallery : Fragment() {
         const val TAG = "DrawingAndGallery"
     }
 
-    // A variable for current color is picked from color pallet.
-    private var imageButtonCurrentPaint: ImageButton? = null
     private var customProgressDialog: Dialog? = null
     private var binding: DrawingAndGalleryFragmentBinding? = null
 
@@ -59,17 +57,44 @@ class DrawingAndGallery : Fragment() {
     ): View {
         binding = DrawingAndGalleryFragmentBinding.inflate(inflater, container, false)
         updateBackgroundImage()
+
         binding!!.drawingView.setSizeForBrush(5.toFloat())
 
-        /**
-         * This is to select the default Image button which is
-         * active and color is already defined in the drawing view class.
-         * array list start position is 0 so the black color is at position 1.
-         */
-        imageButtonCurrentPaint = binding!!.colorLayout[1] as ImageButton
-        imageButtonCurrentPaint!!.setImageDrawable(
-            ContextCompat.getDrawable(requireActivity(), R.drawable.pallet_selected)
-        )
+        binding!!.colorLayout[0].setOnClickListener {
+            updateColor(0)
+        }
+
+        binding!!.colorLayout[1].setOnClickListener {
+            updateColor(1)
+        }
+
+        binding!!.colorLayout[2].setOnClickListener {
+            updateColor(2)
+        }
+
+        binding!!.colorLayout[3].setOnClickListener {
+            updateColor(3)
+        }
+
+        binding!!.colorLayout[4].setOnClickListener {
+            updateColor(4)
+        }
+
+        binding!!.colorLayout[5].setOnClickListener {
+            updateColor(5)
+        }
+
+        binding!!.colorLayout[6].setOnClickListener {
+            updateColor(6)
+        }
+
+        binding!!.colorLayout[7].setOnClickListener {
+            updateColor(7)
+        }
+
+        binding!!.colorLayout[8].setOnClickListener {
+            updateColor(8)
+        }
 
         binding!!.brushButton.setOnClickListener {
             showBrushSizeChooserDialog()
@@ -78,7 +103,7 @@ class DrawingAndGallery : Fragment() {
         brushDialog = BrushDialog(requireActivity())
 
         // To google image search
-        binding!!.searchButton.setOnClickListener { view: View ->
+        binding!!.searchButton.setOnClickListener {
             startActivity(Intent(context, PhotoGalleryActivity::class.java))
         }
 
@@ -112,6 +137,26 @@ class DrawingAndGallery : Fragment() {
             binding?.drawingView?.reset()
         }
         return binding!!.root
+    }
+
+    private fun updateColor(index: Int) {
+        val imageButton = binding!!.colorLayout[index] as ImageButton
+
+        val colorTag = imageButton.tag.toString()
+        // Here the tag is used for swapping the current color with previous color.
+        binding?.drawingView?.setColor(colorTag)
+
+        //Remove selected drawable
+        for (color in 0..8) {
+            val imageButtonCurrentPaint = binding!!.colorLayout[color] as ImageButton
+            imageButtonCurrentPaint.setImageDrawable(
+                ContextCompat.getDrawable(requireActivity(), R.drawable.pallet_normal)
+            )
+        }
+
+        imageButton.setImageDrawable(
+            ContextCompat.getDrawable(requireActivity(), R.drawable.pallet_selected)
+        )
     }
 
     private fun checkSelfPermission() {
@@ -275,23 +320,6 @@ class DrawingAndGallery : Fragment() {
                 binding?.drawingView?.setSizeForBrush(15.toFloat())
                 dismiss()
             }
-        }
-    }
-
-    fun paintClicked(view: View) {
-        if (view !== imageButtonCurrentPaint) {
-            val imageButton = view as ImageButton
-
-            val colorTag = imageButton.tag.toString()
-            // Here the tag is used for swapping the current color with previous color.
-            binding?.drawingView?.setColor(colorTag)
-            imageButton.setImageDrawable(
-                ContextCompat.getDrawable(requireActivity(), R.drawable.pallet_selected)
-            )
-            imageButtonCurrentPaint!!.setImageDrawable(
-                ContextCompat.getDrawable(requireActivity(), R.drawable.pallet_normal)
-            )
-            imageButtonCurrentPaint = view
         }
     }
 
